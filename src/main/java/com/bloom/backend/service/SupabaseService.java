@@ -140,7 +140,7 @@ public class SupabaseService {
                 .post(body)
                 .addHeader("Authorization", "Bearer " + serviceRoleKey)
                 .addHeader("apikey", serviceRoleKey)
-                .addHeader("Prefer", "resolution=ignore-duplicates") // Do not overwrite if it exists
+                .addHeader("Prefer", "resolution=merge-duplicates") // Upsert to merge new details from Truecaller
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
