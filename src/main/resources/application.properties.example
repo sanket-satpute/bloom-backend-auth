@@ -1,0 +1,17 @@
+server.port=8080
+
+# Supabase
+supabase.url=${SUPABASE_URL}
+supabase.service.key=${SUPABASE_SERVICE_KEY}
+supabase.jwt.secret=${SUPABASE_JWT_SECRET}
+
+# Truecaller
+truecaller.client.id=${TRUECALLER_CLIENT_ID}
+
+# Twilio
+twilio.account.sid=${TWILIO_ACCOUNT_SID}
+twilio.auth.token=${TWILIO_AUTH_TOKEN}
+twilio.phone.number=${TWILIO_PHONE_NUMBER}
+
+# Logging
+logging.level.org.springframework.security=DEBUG
