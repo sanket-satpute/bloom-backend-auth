@@ -151,7 +151,8 @@ public class SupabaseService {
     }
 
     public String generateCustomJwt(String userId) {
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+        // Supabase JWT secrets are Base64 encoded. We MUST decode them before signing.
+        SecretKey key = Keys.hmacShaKeyFor(io.jsonwebtoken.io.Decoders.BASE64.decode(jwtSecret));
         
         long nowMillis = System.currentTimeMillis();
         long expMillis = nowMillis + 31536000000L; // 1 year validity
@@ -160,7 +161,7 @@ public class SupabaseService {
 
         return Jwts.builder()
                 .subject(userId)
-                .audience().add("authenticated").and()
+                .claim("aud", "authenticated") // Must be a string, not an array
                 .claim("role", "authenticated")
                 .claim("app_metadata", new JSONObject().put("provider", "truecaller").toMap())
                 .issuedAt(now)
