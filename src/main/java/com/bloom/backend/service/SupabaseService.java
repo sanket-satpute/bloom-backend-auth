@@ -2,6 +2,7 @@ package com.bloom.backend.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.SignatureAlgorithm;
 import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -151,7 +152,7 @@ public class SupabaseService {
     }
 
     public String generateCustomJwt(String userId) {
-        // Supabase treats the JWT secret as a raw UTF-8 string in the dashboard.
+        // Use raw UTF-8 bytes to ensure exact match with Legacy HS256 secret
         SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         
         long nowMillis = System.currentTimeMillis();
@@ -166,7 +167,7 @@ public class SupabaseService {
                 .claim("app_metadata", new JSONObject().put("provider", "truecaller").toMap())
                 .issuedAt(now)
                 .expiration(exp)
-                .signWith(key)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 }

@@ -2,6 +2,7 @@ package com.bloom.backend.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.SignatureAlgorithm;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
@@ -103,9 +104,10 @@ public class OtpService {
                 .subject(userId)
                 .claim("phone", phone)
                 .claim("role", "authenticated")
+                .claim("aud", "authenticated")
                 .issuedAt(now)
                 .expiration(exp)
-                .signWith(key)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 }
