@@ -153,7 +153,7 @@ public class SupabaseService {
 
     public String generateCustomJwt(String userId) {
         // Use raw UTF-8 bytes to ensure exact match with Legacy HS256 secret
-        SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+        javax.crypto.SecretKey key = new javax.crypto.spec.SecretKeySpec(jwtSecret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
         
         long nowMillis = System.currentTimeMillis();
         long expMillis = nowMillis + 31536000000L; // 1 year validity

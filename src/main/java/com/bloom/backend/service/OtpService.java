@@ -93,7 +93,7 @@ public class OtpService {
             secret = "bloom-dev-secret-key-for-local-testing-only-32bytes!!";
         }
         
-        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        javax.crypto.SecretKey key = new javax.crypto.spec.SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
         String userId = UUID.nameUUIDFromBytes(phone.getBytes(StandardCharsets.UTF_8)).toString();
         
         long nowMillis = System.currentTimeMillis();
