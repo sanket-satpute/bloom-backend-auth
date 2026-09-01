@@ -93,7 +93,15 @@ public class OtpService {
             secret = "bloom-dev-secret-key-for-local-testing-only-32bytes!!";
         }
         
-        javax.crypto.SecretKey key = new javax.crypto.spec.SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
+        byte[] keyBytes;
+        try {
+            keyBytes = java.util.Base64.getDecoder().decode(secret);
+        } catch (IllegalArgumentException e) {
+            // Not valid base64 (e.g. the dev fallback string) — use raw UTF-8 bytes
+            keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+        }
+
+        javax.crypto.SecretKey key = new javax.crypto.spec.SecretKeySpec(keyBytes, "HmacSHA256");
         String userId = UUID.nameUUIDFromBytes(phone.getBytes(StandardCharsets.UTF_8)).toString();
         
         long nowMillis = System.currentTimeMillis();
