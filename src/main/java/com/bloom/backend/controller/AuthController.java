@@ -38,13 +38,14 @@ public class AuthController {
             String name = profile.get("name");
             String avatarUrl = profile.get("avatar_url");
             String email = profile.get("email");
-
+            System.out.println("Found Details: " + name + " - " + phoneNumber + " - " + avatarUrl + " - " + email);
             try {
                 // 3. Find or Create the user in Supabase
                 String userId = supabaseService.findOrCreateUser(phoneNumber, name, avatarUrl, email);
 
                 // 4. Generate custom Supabase JWT
                 String jwt = supabaseService.generateCustomJwt(userId);
+                System.out.println("inside try 48 ");
                 return ResponseEntity.ok(new AuthResponse(jwt));
             } catch (Exception se) {
                 // DEV MODE FALLBACK: Generate local JWT if Supabase is not configured
