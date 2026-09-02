@@ -49,10 +49,9 @@ public class AuthController {
                 return ResponseEntity.ok(new AuthResponse(jwt));
             } catch (Exception se) {
                 // DEV MODE FALLBACK: Generate local JWT if Supabase is not configured
-                System.err.println("Supabase findOrCreateUser failed: " + se.getClass().getName() + " - " + se.getMessage());
-                se.printStackTrace();
+                logger.error("Supabase findOrCreateUser failed", se);
                 String devJwt = otpService.generateDevJwt(phoneNumber);
-                System.out.println("Supabase failed, using dev JWT for Truecaller: " + phoneNumber);
+                logger.info("Supabase failed, using dev JWT for Truecaller: " + phoneNumber);
                 return ResponseEntity.ok(new AuthResponse(devJwt));
             }
 
